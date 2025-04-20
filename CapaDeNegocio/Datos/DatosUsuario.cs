@@ -2,15 +2,14 @@
 using System.IO;
 using System.Text.Json;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Crud
 {
-    internal class Datos : IAccesoADatos<Usuario>
+    public class Datos : IAccesoADatos<Usuario>
     {
-        private static List<Usuario> listaUsuarios;
+        public static List<Usuario> listaUsuarios;
+
         private static int lastId;
 
 
@@ -19,9 +18,9 @@ namespace Crud
 
             try {
                 
-                string path = "C:\\Users\\A6\\WebEscuelaJson\\CapaDeNegocio\\Datos\\usuarios.json";
+                string path = "C:\\Users\\A6\\source\\repos\\CapaDeNegocio\\Datos\\usuarios.json";
                 string json= File.ReadAllText(path);    
-                listaUsuarios=JsonSerializer.Deserialize <List<Usuario>>(json);
+                listaUsuarios= JsonSerializer.Deserialize <List<Usuario>>(json);
             }
             catch  (Exception ex)
             {
@@ -34,7 +33,7 @@ namespace Crud
 
             try
             {
-                string path= "C:\\Users\\A6\\WebEscuelaJson\\CapaDeNegocio\\Datos\\usuarios.json";
+                string path= "C:\\Users\\A6\\source\\repos\\CapaDeNegocio\\Datos\\usuarios.json";
                 string json=JsonSerializer.Serialize(listaUsuarios);
                 File.WriteAllText(path, json);
                                             }
@@ -44,20 +43,27 @@ namespace Crud
             }
         }
 
-        private static void Clear()
+        private static void Limpiar()
         {
             listaUsuarios.Clear();
         }
+
+
         public void Add(Usuario data)
         {
             Read();
-            string pathID = "C:\\Users\\A6\\WebEscuelaJson\\CapaDeNegocio\\Datos\\usuarioLastId.txt";
+            string pathID = "C:\\Users\\A6\\source\\repos\\CapaDeNegocio\\Datos\\usuarioLastId.txt";
+
             lastId = int.Parse(File.ReadAllText(pathID));
+
             data.ID=++lastId;
+
             File.WriteAllText(pathID, lastId.ToString()); // guarda el ultimo ID en el archivo de texto
             listaUsuarios.Add(data);
+
+
             Write();
-            Clear();
+            Limpiar();
 
         
         
@@ -66,44 +72,69 @@ namespace Crud
 
         public void Erase(Usuario data)
         {
-            Read();
-            foreach(Usuario u in listaUsuarios)
+            Read(); // Cargar los datos antes de modificar la lista
+
+            // Buscar el índice del usuario por su ID
+            int indexToRemove = -1;
+            for (int i = 0; i < listaUsuarios.Count; i++)
             {
-                if(data.ID==u.ID)
+                if (listaUsuarios[i].ID == data.ID)
                 {
-                    listaUsuarios.Remove(u);
-                    Write() ;
-                    Clear();
-                    return;
-
-
+                    indexToRemove = i;
+                    break; // Salir del ciclo cuando encontramos el usuario
                 }
-
             }
-            Clear();
-            throw new Exception("No se encontró el usuario a elimnar");
 
+            if (indexToRemove != -1)
+            {
+                listaUsuarios.RemoveAt(indexToRemove); // Eliminar el usuario por índice
 
+                Write(); // Guardar cambios en la base de datos o archivo
 
+                Console.WriteLine("Usuario eliminado con éxito");
+                Console.WriteLine(listaUsuarios); // Mostrar la lista actualizada
+
+                return; // Salir del método después de eliminar el usuario
+            }
+
+            throw new Exception("No se encontró el usuario a eliminar");
         }
 
-        public Usuario Find(Usuario data)
+
+
+
+
+
+
+        public List<Usuario> Find(Usuario data)
         {
-            Read();
+            Read(); // Cargar listaUsuarios
+            List<Usuario> resultados = new List<Usuario>();
+
             foreach (Usuario u in listaUsuarios)
             {
-                if (data.ID == u.ID)
-                {
-                    Clear();
+                bool coincide = false;
 
-                    return u;
-                    
-                }
+                if (data.ID != 0 && data.ID == u.ID)
+                    coincide = true;
 
+                if (!string.IsNullOrEmpty(data.Nombre) && u.Nombre.IndexOf(data.Nombre, StringComparison.OrdinalIgnoreCase) >= 0)
+                    coincide = true;
+
+                if (data.Dni != 0 && data.Dni == u.Dni)
+                    coincide = true;
+
+                if (!string.IsNullOrEmpty(data.Mail) && u.Mail.IndexOf(data.Mail, StringComparison.OrdinalIgnoreCase) >= 0)
+                    coincide = true;
+
+                if (coincide)
+                    resultados.Add(u);
             }
-            Clear();
-            throw new Exception("No se encontró el usuario");
+
+            return resultados;
         }
+
+
 
         public void Modify(Usuario data)
         {
@@ -115,8 +146,9 @@ namespace Crud
                     listaUsuarios[i].Nombre = data.Nombre;
                     listaUsuarios[i].Dni = data.Dni;
                     listaUsuarios[i].Mail = data.Mail;
+
                     Write();
-                    Clear();
+                    Limpiar();
                     return;
 
                 }
@@ -131,7 +163,13 @@ namespace Crud
             Read();
             string json = JsonSerializer.Serialize(listaUsuarios);
             return json;
+            throw new Exception("No hay lista para mostrar");
 
+        }
+
+        public void Login(Usuario data)
+        {
+            throw new NotImplementedException();
         }
     }
 }

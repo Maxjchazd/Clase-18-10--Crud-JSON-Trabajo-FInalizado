@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+
 
 
 
@@ -14,7 +8,8 @@ namespace Crud
     public class Usuario : IABMC<Usuario>, IUsuario
     {
         private static Datos datos =new Datos();
-        
+        /* comprenderlo bien */
+
         #region IID
         public int ID { get ; set ; }
 
@@ -67,7 +62,7 @@ namespace Crud
             datos.Erase(this);
         }
 
-        public Usuario Find()
+        public Usuario Find(int iD)
         {
           datos.Find(this);
             return this;
@@ -81,6 +76,16 @@ namespace Crud
 
             datos.Modify(this);
             
+        }
+
+        public void Update()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Login()
+        {
+            throw new NotImplementedException();
         }
         #endregion
 

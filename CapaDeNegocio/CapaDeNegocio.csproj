@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4C0C1BE2-8628-4F4D-BACA-7688609BAA73}</ProjectGuid>
+    <ProjectGuid>{6C34035D-6E0D-469F-A7C6-3F6605ED82F9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CapaDeNegocio</RootNamespace>
@@ -31,13 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\WebEcuelaJson\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.Azure.Amqp, Version=2.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\WebSiteEscuela\packages\Microsoft.Azure.Amqp.2.6.9\lib\net45\Microsoft.Azure.Amqp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
-    <Reference Include="System.Text.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+    <Reference Include="System.Text.Json, Version=8.0.0.5, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,20 +47,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clases\Carrera.cs" />
+    <Compile Include="Clases\Registro.cs" />
     <Compile Include="Clases\Usuario.cs" />
+    <Compile Include="Datos\DatosCarrera.cs" />
+    <Compile Include="Datos\DatosRegistro.cs" />
     <Compile Include="Datos\DatosUsuario.cs" />
     <Compile Include="Interfaces\IABMC.cs" />
     <Compile Include="Interfaces\IAccesoADatos.cs" />
     <Compile Include="Interfaces\IID.cs" />
+    <Compile Include="Interfaces\ICarrera.cs" />
+    <Compile Include="Interfaces\IRegistro.cs" />
     <Compile Include="Interfaces\IUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Datos\usuarioLastId.txt" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="Datos\carreras.json" />
+    <None Include="Datos\registros.json" />
     <None Include="Datos\usuarios.json" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Datos\carrerasLastId.txt" />
+    <Content Include="Datos\registrosLastId.txt" />
+    <Content Include="Datos\usuarioLastId.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties datos_4registros_1json__JsonSchema="https://deta.space/assets/spacefile.schema.json" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

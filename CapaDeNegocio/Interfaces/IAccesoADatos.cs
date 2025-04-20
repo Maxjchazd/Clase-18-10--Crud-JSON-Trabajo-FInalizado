@@ -9,8 +9,10 @@ namespace Crud
     interface IAccesoADatos<T> 
     {
         void Modify(T data);
+        void Login(T data);
+
         void Add(T data);
         void Erase(T data);
-        T Find(T data);
+        List<T> Find(T data);
     }
 }

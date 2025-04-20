@@ -12,7 +12,9 @@ namespace Crud
         void Add();
 
         void Erase();
-        T Find();
+        T Find(int iD);
+        void Update();
+        string List();
 
     }
 }
